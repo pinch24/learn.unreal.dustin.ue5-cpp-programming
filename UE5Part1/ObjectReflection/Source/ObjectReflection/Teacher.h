@@ -4,14 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Person.h"
 #include "Teacher.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class OBJECTREFLECTION_API UTeacher : public UObject
+class OBJECTREFLECTION_API UTeacher : public UPerson
 {
 	GENERATED_BODY()
+
+public:
+	UTeacher();
+
+	virtual void DoLesson() override;
 	
+private:
+	UPROPERTY()
+	int32 Id;
 };

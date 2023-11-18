@@ -5,13 +5,13 @@
 
 UPerson::UPerson()
 {
-	Name = TEXT("Timothy D. Sweeney");
-	Year = 54;
+	Name = TEXT("Person");
+	Year = 1;
 }
 
 void UPerson::DoLesson()
 {
-	UE_LOG(LogTemp, Log, TEXT("%s attend the class."), *Name);
+	UE_LOG(LogTemp, Warning, TEXT("%s attend the class."), *Name);
 }
 
 const FString& UPerson::GetName() const
