@@ -19,7 +19,7 @@ enum class ECardType : uint8
  * 
  */
 UCLASS()
-class UNREALCOMPOSITION_API UCard : public UObject
+class UNREALDELEGATE_API UCard : public UObject
 {
 	GENERATED_BODY()
 

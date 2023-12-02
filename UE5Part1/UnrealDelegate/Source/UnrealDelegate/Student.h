@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class UNREALCOMPOSITION_API UStudent : public UPerson, public ILessonInterface
+class UNREALDELEGATE_API UStudent : public UPerson, public ILessonInterface
 {
 	GENERATED_BODY()
 

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class UNREALCOMPOSITION_API UMyGameInstance : public UGameInstance
+class UNREALDELEGATE_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
