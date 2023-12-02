@@ -17,10 +17,16 @@ class UNREALCOMPOSITION_API UPerson : public UObject
 public:
 	UPerson();
 
-	FORCEINLINE FString & GetName() { return Name; }
-	FORCEINLINE void SetName(const FString & InName) { Name = InName; }
+	FORCEINLINE const FString& GetName() { return Name; }
+	FORCEINLINE void SetName(const FString& InName) { Name = InName; }
+
+	FORCEINLINE class UCard* GetCard() const { return Card; }
+	FORCEINLINE void SetCard(class UCard* InCard) { Card = InCard; }
 
 protected:
 	UPROPERTY()
 	FString Name;
+
+	UPROPERTY()
+	TObjectPtr<class UCard> Card;
 };

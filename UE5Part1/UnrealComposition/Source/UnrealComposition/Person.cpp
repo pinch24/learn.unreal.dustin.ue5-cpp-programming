@@ -2,8 +2,10 @@
 
 
 #include "Person.h"
+#include "Card.h"
 
 UPerson::UPerson()
 {
 	Name = TEXT("Man");
+	Card = CreateDefaultSubobject<UCard>(TEXT("NAME_Card"));
 }

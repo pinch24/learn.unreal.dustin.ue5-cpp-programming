@@ -2,6 +2,8 @@
 
 
 #include "MyGameInstance.h"
+
+#include "Card.h"
 #include "Staff.h"
 #include "Student.h"
 #include "Teacher.h"
@@ -18,22 +20,18 @@ void UMyGameInstance::Init()
 	UE_LOG(LogTemp, Warning, TEXT("================================================================"));
 	
 	TArray<UPerson *> Persons = { NewObject<UStudent>(), NewObject<UTeacher>(), NewObject<UStaff>() };
-	for (const auto Person : Persons) {
-		UE_LOG(LogTemp, Warning, TEXT("Member Name: %s"), *Person->GetName());
-	}
-
-	UE_LOG(LogTemp, Warning, TEXT("================================================================"));
-
-	for (const auto Person: Persons) {
-		ILessonInterface* LessionInterface = Cast<ILessonInterface>(Person);
-		if (LessionInterface) {
-			UE_LOG(LogTemp, Warning, TEXT("%s can participate in the class."), *Person->GetName());
-			LessionInterface->DoLesson();
-		}
-		else {
-			UE_LOG(LogTemp, Warning, TEXT("%s is not allowed to participate in the class."), *Person->GetName());
+	for (const auto Person : Persons)
+	{
+		const UCard* OwnCard = Person->GetCard();
+		check(OwnCard);
+		ECardType CardType = OwnCard->GetCardType();
+		
+		if (const UEnum* CardEnumType = FindObject<UEnum>(nullptr, TEXT("/Script/UnrealComposition.ECardType")))
+		{
+			FString CardMetaData = CardEnumType->GetDisplayNameTextByValue((int64)CardType).ToString();
+			UE_LOG(LogTemp, Warning, TEXT("%s's Card Type: %s"), *Person->GetName(), *CardMetaData);
 		}
 	}
-
+	
 	UE_LOG(LogTemp, Warning, TEXT("================================================================"));
 }
