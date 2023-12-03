@@ -2,12 +2,15 @@
 
 
 #include "MyGameInstance.h"
+
+#include "CopyTextureShaders.h"
 #include "Algo/Accumulate.h"
 
 void UMyGameInstance::Init()
 {
 	Super::Init();
 
+	// TArray
 	const int32 ArrayNum = 10;
 	TArray<int32> Int32Array;
 
@@ -40,4 +43,22 @@ void UMyGameInstance::Init()
 
 	const int32 SumByAlgo = Algo::Accumulate(Int32Array, 0);
 	ensure(Sum == SumByAlgo);
+
+	// TSet
+	TSet<int32> Int32Set;
+	for (int32 ix = 1; ix <= ArrayNum; ix++)
+	{
+		Int32Set.Add(ix);
+	}
+
+	Int32Set.Remove(2);
+	Int32Set.Remove(4);
+	Int32Set.Remove(6);
+	Int32Set.Remove(8);
+	Int32Set.Remove(10);
+	Int32Set.Add(2);
+	Int32Set.Add(4);
+	Int32Set.Add(6);
+	Int32Set.Add(8);
+	Int32Set.Add(10);
 }
