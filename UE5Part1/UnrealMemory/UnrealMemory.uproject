@@ -5,10 +5,11 @@
 	"Description": "",
 	"Modules": [
 		{
-			"Name": "UnrealContainer",
+			"Name": "UnrealMemory",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
+				"Engine",
 				"CoreUObject"
 			]
 		}
