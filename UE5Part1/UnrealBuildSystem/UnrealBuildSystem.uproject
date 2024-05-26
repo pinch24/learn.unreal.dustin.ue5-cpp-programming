@@ -3,7 +3,7 @@
     "EngineAssociation" : "5.4",
     "Modules" : [
         {
-            "Name" : "UnrealSerialization",
+            "Name" : "UnrealBuildSystem",
             "Type" : "Runtime"
         }
     ]
