@@ -1,4 +1,10 @@
 {
     "FileVersion" : 3,
-    "EngineAssociation" : "5.4"
+    "EngineAssociation" : "5.4",
+    "Modules" : [
+        {
+            "Name" : "UnrealSerialization",
+            "Type" : "Runtime"
+        }
+    ]
 }
