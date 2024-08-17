@@ -13,5 +13,14 @@ UCLASS()
 class ARENABATTLE_API AABCharacterPlayer : public AABCharacterBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AABCharacterPlayer();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CAMERA, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class USpringArmComponent> CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UCameraComponent> FollowCamera;
 };
