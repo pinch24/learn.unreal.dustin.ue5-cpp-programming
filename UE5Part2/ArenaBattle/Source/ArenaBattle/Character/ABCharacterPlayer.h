@@ -51,10 +51,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> AttackAction;
+
 	void ShoulderLook(const FInputActionValue& Value);
 	void ShoulderMove(const FInputActionValue& Value);
 	
 	void QuaterMove(const FInputActionValue& Value);
+
+	void Attack();
 
 	ECharacterControlType CurrentCharacterControlType;
 
