@@ -58,17 +58,22 @@ void AABStageGimmick::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
+	UE_LOG(LogTemp, Warning, TEXT("OnConstruction"));
+	
 	SetState(CurrentState);
 }
 
 void AABStageGimmick::OnStageTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	SetState(EStageState::FIGHT);
 	UE_LOG(LogTemp, Warning, TEXT("OnStageTriggerBeginOverlap"));
+	
+	SetState(EStageState::FIGHT);
 }
 
 void AABStageGimmick::SetState(EStageState InNewState)
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetState"));
+	
 	CurrentState = InNewState;
 
 	if (StateChangedActions.Contains(InNewState))
@@ -79,6 +84,8 @@ void AABStageGimmick::SetState(EStageState InNewState)
 
 void AABStageGimmick::SetReady()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetReady"));
+	
 	StageTrigger->SetCollisionProfileName(CPROFILE_ABTRIGGER);
 	for (auto GateTrigger : GateTriggers)
 	{
@@ -89,6 +96,8 @@ void AABStageGimmick::SetReady()
 
 void AABStageGimmick::SetFight()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetFight"));
+	
 	StageTrigger->SetCollisionProfileName(TEXT("NoCollision"));
 	for (auto GateTrigger : GateTriggers)
 	{
@@ -99,6 +108,8 @@ void AABStageGimmick::SetFight()
 
 void AABStageGimmick::SetChooseReward()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetChooseReward"));
+	
 	StageTrigger->SetCollisionProfileName(TEXT("NoCollision"));
 	for (auto GateTrigger : GateTriggers)
 	{
@@ -109,16 +120,20 @@ void AABStageGimmick::SetChooseReward()
 
 void AABStageGimmick::SetChooseNext()
 {
+	UE_LOG(LogTemp, Warning, TEXT("SetChooseNext"));
+	
 	StageTrigger->SetCollisionProfileName(TEXT("NoCollision"));
 	for (auto GateTrigger : GateTriggers)
 	{
-		GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
+		GateTrigger->SetCollisionProfileName(CPROFILE_ABTRIGGER);
 	}
 	OpenAllGates();
 }
 
 void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnGateTriggerBeginOverlap"));
+	
 	check(OverlappedComponent->ComponentTags.Num() == 1);
 	FName ComponentTag = OverlappedComponent->ComponentTags[0];
 	FName SocketName = FName(*ComponentTag.ToString().Left(2));
@@ -131,11 +146,11 @@ void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 		OverlapResults,
 		NewLocation,
 		FQuat::Identity,
-		FCollisionObjectQueryParams::InitType::AllStaticObjects,
+		FCollisionObjectQueryParams::InitType::AllObjects,
 		FCollisionShape::MakeSphere(775.f),
 		CollisionQueryParam);
 	
-	if (bResult)
+	if (bResult == false)
 	{
 		GetWorld()->SpawnActor<AABStageGimmick>(NewLocation, FRotator::ZeroRotator);
 	}
@@ -143,6 +158,8 @@ void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent* OverlappedC
 
 void AABStageGimmick::OpenAllGates()
 {
+	UE_LOG(LogTemp, Warning, TEXT("OpenAllGates"));
+	
     for (auto Gate : Gates)
     {
 	    (Gate.Value)->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
@@ -151,6 +168,8 @@ void AABStageGimmick::OpenAllGates()
 
 void AABStageGimmick::CloseAllGates()
 {
+	UE_LOG(LogTemp, Warning, TEXT("CloseAllGates"));
+	
     for (auto Gate : Gates)
     {
 	    (Gate.Value)->SetRelativeRotation(FRotator::ZeroRotator);
@@ -159,11 +178,15 @@ void AABStageGimmick::CloseAllGates()
 
 void AABStageGimmick::OnOpponentDestroyed(AActor* DestroyedActor)
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnOpponentDestroyed"));
+	
 	SetState(EStageState::REWARD);
 }
 
 void AABStageGimmick::OnOpponentSpawn()
 {
+	UE_LOG(LogTemp, Warning, TEXT("OnOpponentSpawn"));
+	
 	const FVector SpawnLocation = GetActorLocation() + FVector::UpVector * 88.f;
 	AActor* OpponentActor = GetWorld()->SpawnActor(OpponentClass, &SpawnLocation, &FRotator::ZeroRotator);
 	if (AABCharacterNonPlayer* ABOpponentCharacter = Cast<AABCharacterNonPlayer>(OpponentActor))
