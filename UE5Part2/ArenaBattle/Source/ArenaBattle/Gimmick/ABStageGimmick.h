@@ -33,6 +33,9 @@ class ARENABATTLE_API AABStageGimmick : public AActor
 public:	
 	AABStageGimmick();
 
+	FORCEINLINE int32 GetStageNum() const { return CurrentStageNum; }
+	FORCEINLINE void SetStageNum(int32 NewStageNum) { CurrentStageNum = NewStageNum; }
+
 protected:
 	virtual void OnConstruction(const FTransform& Transform) override;
 	
@@ -98,4 +101,7 @@ protected:
 	void OnRewardTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	void SpawnRewardBoxes();
+
+	UPROPERTY(VisibleInstanceOnly, Category = Stat, Meta = (AllowPrivateAccess = "true"))
+	int32 CurrentStageNum;
 };

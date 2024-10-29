@@ -37,6 +37,10 @@ public:
 
 	virtual void PostInitializeComponents() override;
 
+	// Stat Section
+	int32 GetLevel();
+	void SetLevel(int32 InNewLevel);
+
 protected:
 	virtual void SetCharacterControlData(const class UABCharacterControlData* CharacterControlData);
 
