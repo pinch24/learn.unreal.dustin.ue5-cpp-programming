@@ -1,9 +1,24 @@
 #include "CharacterStat/ABCharacterStatComponent.h"
+#include "GameData/ABGameSingleton.h"
 
 UABCharacterStatComponent::UABCharacterStatComponent()
 {
-	MaxHp = 200.f;
-	SetHp(MaxHp);
+	CurrentLevel = 1;
+}
+
+void UABCharacterStatComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	SetLevelStat(CurrentLevel);
+	SetHp(BaseStat.MaxHp);
+}
+
+void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
+{
+	CurrentLevel = FMath::Clamp(InNewLevel, 1, UABGameSingleton::Get().CharacterMaxLevel);
+	BaseStat = UABGameSingleton::Get().GetCharacterStat(CurrentLevel);
+	check(BaseStat.MaxHp > 0.0f);
 }
 
 float UABCharacterStatComponent::ApplyDamage(float InDamage)
@@ -19,16 +34,9 @@ float UABCharacterStatComponent::ApplyDamage(float InDamage)
 	return ActualDamage;
 }
 
-void UABCharacterStatComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	CurrentHp = MaxHp;
-}
-
 void UABCharacterStatComponent::SetHp(float NewHp)
 {
-	CurrentHp = FMath::Clamp<float>(NewHp, 0.f, MaxHp);
+	CurrentHp = FMath::Clamp<float>(NewHp, 0.f, BaseStat.MaxHp);
 
 	OnHpChanged.Broadcast(CurrentHp);
 }
