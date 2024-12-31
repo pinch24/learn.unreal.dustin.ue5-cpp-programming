@@ -20,6 +20,7 @@ public:
 	
 protected:
     virtual void BeginPlay() override;
+	virtual void SetDead() override;
 
 	// Character Control Section
 	void ChangeCharacterControl();
