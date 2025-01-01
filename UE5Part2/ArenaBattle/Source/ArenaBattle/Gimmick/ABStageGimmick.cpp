@@ -3,6 +3,7 @@
 #include "Components/BoxComponent.h"
 #include "Physics/ABCollision.h"
 #include "Engine/OverlapResult.h"
+#include "Interface/ABGameInterface.h"
 
 AABStageGimmick::AABStageGimmick()
 {
@@ -202,6 +203,16 @@ void AABStageGimmick::CloseAllGates()
 void AABStageGimmick::OnOpponentDestroyed(AActor* DestroyedActor)
 {
 	UE_LOG(LogTemp, Warning, TEXT("OnOpponentDestroyed"));
+
+	IABGameInterface* ABGameMode = Cast<IABGameInterface>(GetWorld()->GetAuthGameMode());
+	if (ABGameMode)
+	{
+		ABGameMode->OnPlayerScoreChanged(CurrentStageNum);
+		if (ABGameMode->IsGameCleared())
+		{
+			return;
+		}
+	}
 	
 	SetState(EStageState::REWARD);
 }

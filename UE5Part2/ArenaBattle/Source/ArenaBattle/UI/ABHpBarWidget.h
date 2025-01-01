@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "ABUserWidget.h"
+#include "GameData/ABCharacterStat.h"
 #include "ABHpBarWidget.generated.h"
 
 /**
@@ -14,15 +15,22 @@ class ARENABATTLE_API UABHpBarWidget : public UABUserWidget
 
 public:
 	UABHpBarWidget(const FObjectInitializer& ObjectInitializer);
-
-	FORCEINLINE void SetMaxHp(float NewMaxHp) { MaxHp = NewMaxHp; }
+	
 	void UpdateHpBar(float NewCurrentHp);
+	void UpdateStat(const FABCharacterStat& BaseStat, const FABCharacterStat& ModifierStat);
+	FString GetHpStatText();
 
 protected:
 	virtual void NativeConstruct() override;
 	
 	UPROPERTY()
 	TObjectPtr<class UProgressBar> HpProgressBar;
+
+	UPROPERTY()
+	TObjectPtr<class UTextBlock> HpStat;
+
+	UPROPERTY()
+	float CurrentHp;
 
 	UPROPERTY()
 	float MaxHp;

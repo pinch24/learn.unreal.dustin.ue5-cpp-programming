@@ -5,6 +5,9 @@
 #include "InputMappingContext.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "CharacterStat/ABCharacterStatComponent.h"
+#include "Interface/ABGameInterface.h"
+#include "UI/ABHUDWidget.h"
 
 AABCharacterPlayer::AABCharacterPlayer()
 {
@@ -68,7 +71,30 @@ void AABCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		EnableInput(PlayerController);
+	}
+	
 	SetCharacterControl(CurrentCharacterControlType);
+}
+
+void AABCharacterPlayer::SetDead()
+{
+	Super::SetDead();
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		DisableInput(PlayerController);
+
+		IABGameInterface* ABGameMode = Cast<IABGameInterface>(GetWorld()->GetAuthGameMode());
+		if (ABGameMode)
+		{
+			ABGameMode->OnPlayerDead();
+		}
+	}
 }
 
 void AABCharacterPlayer::ChangeCharacterControl()
@@ -90,7 +116,7 @@ void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterC
 
 	SetCharacterControlData(NewCharacterControl);
 
-	APlayerController* PlayerController = CastChecked<APlayerController>(Controller);
+	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	{
 		Subsystem->ClearAllMappings();
@@ -115,21 +141,6 @@ void AABCharacterPlayer::SetCharacterControlData(const class UABCharacterControl
 	CameraBoom->bInheritYaw = CharacterControlData->bInheritYaw;
 	CameraBoom->bInheritRoll = CharacterControlData->bInheritRoll;
 	CameraBoom->bDoCollisionTest = CharacterControlData->bDoCollisionTest;
-}
-
-void AABCharacterPlayer::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
-
-	EnhancedInputComponent->BindAction(ChangeControlAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ChangeCharacterControl);
-	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
-	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
-	EnhancedInputComponent->BindAction(QuaterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuaterMove);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::Attack);
 }
 
 void AABCharacterPlayer::ShoulderLook(const FInputActionValue& Value)
@@ -180,4 +191,31 @@ void AABCharacterPlayer::QuaterMove(const FInputActionValue& Value)
 void AABCharacterPlayer::Attack()
 {
 	ProcessComboCommand();
+}
+
+void AABCharacterPlayer::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+
+	EnhancedInputComponent->BindAction(ChangeControlAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ChangeCharacterControl);
+	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
+	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
+	EnhancedInputComponent->BindAction(QuaterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuaterMove);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::Attack);
+}
+
+void AABCharacterPlayer::SetupHUDWidget(class UABHUDWidget* InHUDWidget)
+{
+	if (InHUDWidget)
+	{
+		InHUDWidget->UpdateStat(Stat->GetBaseStat(), Stat->GetModifierStat());
+		InHUDWidget->UpdateHpBar(Stat->GetCurrentHp());
+
+		Stat->OnStatChanged.AddUObject(InHUDWidget, &UABHUDWidget::UpdateStat);
+		Stat->OnHpChanged.AddUObject(InHUDWidget, &UABHUDWidget::UpdateHpBar);
+	}
 }
