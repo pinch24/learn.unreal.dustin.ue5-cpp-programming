@@ -33,7 +33,6 @@ void AABPlayerController::BeginPlay()
 	SetInputMode(GameOnlyInputMode);
 
 	ABHUDWidget = CreateWidget<UABHUDWidget>(this, ABHUDWidgetClass);
-
 	if (ABHUDWidget)
 	{
 		ABHUDWidget->AddToViewport();

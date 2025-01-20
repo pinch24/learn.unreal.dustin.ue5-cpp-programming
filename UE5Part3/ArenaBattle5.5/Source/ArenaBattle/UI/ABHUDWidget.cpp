@@ -23,7 +23,7 @@ void UABHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	HpBar = Cast<UABHpBarWidget>(GetWidgetFromName("WidgetHPBar"));
+	HpBar = Cast<UABHpBarWidget>(GetWidgetFromName(TEXT("WidgetHPBar")));
 	ensure(HpBar);
 
 	CharacterStat = Cast<UABCharacterStatWidget>(GetWidgetFromName(TEXT("WidgetCharacterStat")));

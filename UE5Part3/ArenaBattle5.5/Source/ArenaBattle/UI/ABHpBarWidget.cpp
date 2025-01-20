@@ -12,11 +12,11 @@ UABHpBarWidget::UABHpBarWidget(const FObjectInitializer& ObjectInitializer) : Su
 void UABHpBarWidget::UpdateHpBar(float NewCurrentHp)
 {
 	CurrentHp = NewCurrentHp;
-	 
+	
+	ensure(MaxHp > 0.f);
 	if (HpProgressBar)
 	{
-		int percent = MaxHp > 0.f ? NewCurrentHp / MaxHp : 0.f;
-		HpProgressBar->SetPercent(percent);
+		HpProgressBar->SetPercent(NewCurrentHp / MaxHp);
 	}
 
 	if (HpStat)
