@@ -83,7 +83,7 @@ void AABCharacterPlayer::BeginPlay()
 void AABCharacterPlayer::SetDead()
 {
 	Super::SetDead();
-
+	
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (PlayerController)
 	{
@@ -111,23 +111,28 @@ void AABCharacterPlayer::ChangeCharacterControl()
 
 void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterControlType)
 {
+	if (IsLocallyControlled() == false) return;
+	
 	UABCharacterControlData* NewCharacterControl = CharacterControlManager[NewCharacterControlType];
 	check(NewCharacterControl);
 
 	SetCharacterControlData(NewCharacterControl);
 
-	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
 	{
-		Subsystem->ClearAllMappings();
-		UInputMappingContext* NewMappingContext = NewCharacterControl->InputMappingContext;
-		if (NewMappingContext)
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(NewMappingContext, 0);
+			Subsystem->ClearAllMappings();
+			UInputMappingContext* NewMappingContext = NewCharacterControl->InputMappingContext;
+			if (NewMappingContext)
+			{
+				Subsystem->AddMappingContext(NewMappingContext, 0);
+			}
 		}
-	}
 
-	CurrentCharacterControlType = NewCharacterControlType;
+		CurrentCharacterControlType = NewCharacterControlType;
+	}
 }
 
 void AABCharacterPlayer::SetCharacterControlData(const class UABCharacterControlData* CharacterControlData)
