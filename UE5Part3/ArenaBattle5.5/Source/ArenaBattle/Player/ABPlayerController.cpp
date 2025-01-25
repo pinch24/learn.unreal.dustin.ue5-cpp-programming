@@ -1,3 +1,4 @@
+#include "ArenaBattle.h"
 #include "Player/ABPlayerController.h"
 #include "UI/ABHUDWidget.h"
 
@@ -25,16 +26,42 @@ void AABPlayerController::GameOver()
 	K2_OnGameOver();
 }
 
+void AABPlayerController::PostInitializeComponents()
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	
+	Super::PostInitializeComponents();
+	
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+}
+
+void AABPlayerController::PostNetInit()
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	
+	Super::PostNetInit();
+	
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+}
+
 void AABPlayerController::BeginPlay()
 {
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	
 	Super::BeginPlay();
+	
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 
-	FInputModeGameOnly GameOnlyInputMode;
-	SetInputMode(GameOnlyInputMode);
+	// FInputModeUIOnly InputMode;
+	FInputModeGameOnly InputMode;
+	SetInputMode(InputMode);
 
-	ABHUDWidget = CreateWidget<UABHUDWidget>(this, ABHUDWidgetClass);
-	if (ABHUDWidget)
+	if (IsLocalPlayerController())
 	{
-		ABHUDWidget->AddToViewport();
+		ABHUDWidget = CreateWidget<UABHUDWidget>(this, ABHUDWidgetClass);
+		if (ABHUDWidget)
+		{
+			ABHUDWidget->AddToViewport();
+		}
 	}
 }
