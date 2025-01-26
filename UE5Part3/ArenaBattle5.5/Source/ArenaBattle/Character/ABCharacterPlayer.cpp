@@ -8,6 +8,7 @@
 #include "CharacterStat/ABCharacterStatComponent.h"
 #include "Interface/ABGameInterface.h"
 #include "UI/ABHUDWidget.h"
+#include "ArenaBattle.h"
 
 AABCharacterPlayer::AABCharacterPlayer()
 {
@@ -95,6 +96,94 @@ void AABCharacterPlayer::SetDead()
 			ABGameMode->OnPlayerDead();
 		}
 	}
+}
+
+void AABCharacterPlayer::PossessedBy(AController* NewController)
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+
+	AActor* OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+	
+	Super::PossessedBy(NewController);
+
+	OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+}
+
+void AABCharacterPlayer::OnRep_Owner()
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s %s"), *GetName(), TEXT("Begin"));
+
+	AActor* OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+	
+	Super::OnRep_Owner();
+
+	OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+
+
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+}
+
+void AABCharacterPlayer::PostNetInit()
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+
+	AActor* OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+	
+	Super::PostNetInit();
+
+	OwnerActor = GetOwner();
+	if (OwnerActor)
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is %s"), *OwnerActor->GetName());
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Log, TEXT("Owner is NULL."));
+	}
+
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }
 
 void AABCharacterPlayer::ChangeCharacterControl()

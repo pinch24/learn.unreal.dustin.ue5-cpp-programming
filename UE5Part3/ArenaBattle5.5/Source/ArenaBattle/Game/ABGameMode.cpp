@@ -68,7 +68,7 @@ void AABGameMode::PreLogin(const FString& Options, const FString& Address, const
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
 	
 	Super::PreLogin(Options, Address, UniqueId, ErrorMessage);
-	// ErrorMessage = TEXT("Server Is Full.");
+	// ErrorMessage = TEXT("Server Is Full.");	// ErrorMessage를 설정하면 네트워크 접속을 허용하지 않는다.
 	
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }
