@@ -68,7 +68,7 @@ void AABGameMode::PreLogin(const FString& Options, const FString& Address, const
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
 	
 	Super::PreLogin(Options, Address, UniqueId, ErrorMessage);
-	ErrorMessage = TEXT("Server Is Full.");
+	// ErrorMessage = TEXT("Server Is Full.");
 	
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }
@@ -90,14 +90,35 @@ void AABGameMode::PostLogin(APlayerController* NewPlayer)
 	
 	Super::PostLogin(NewPlayer);
 
+	UNetDriver* NetDriver = GetNetDriver();
+	if (NetDriver)
+	{
+		if (NetDriver->ClientConnections.Num() == 0)
+		{
+			AB_LOG(LogABNetwork, Error, TEXT("%s"), TEXT("Client Connections is 0."));
+			return;
+		}
+		else
+		{
+			for (const auto& Connection : NetDriver->ClientConnections)
+			{
+				AB_LOG(LogABNetwork, Log, TEXT("Client Connections is %s"), *Connection->GetName());
+			}
+		}
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Error, TEXT("%s"), TEXT("NetDriver is NULL."));
+	}
+
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }
 
 void AABGameMode::StartPlay()
 {
-	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
-	
-	Super::StartPlay();
-
-	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+	// AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	//
+	// Super::StartPlay();
+	//
+	// AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }

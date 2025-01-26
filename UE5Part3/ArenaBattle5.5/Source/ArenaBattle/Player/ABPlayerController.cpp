@@ -40,6 +40,23 @@ void AABPlayerController::PostNetInit()
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
 	
 	Super::PostNetInit();
+
+	UNetDriver* NetDriver = GetNetDriver();
+	if (NetDriver)
+	{
+		if (NetDriver->ServerConnection)
+		{
+			AB_LOG(LogABNetwork, Log, TEXT("Server Connections is %s"), *NetDriver->ServerConnection->GetName());
+		}
+		else
+		{
+			AB_LOG(LogABNetwork, Error, TEXT("Server Connections is NULL"));
+		}
+	}
+	else
+	{
+		AB_LOG(LogABNetwork, Error, TEXT("%s"), TEXT("NetDriver is NULL."));
+	}
 	
 	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }
