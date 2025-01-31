@@ -1,4 +1,6 @@
 #include "Prop/ABFountain.h"
+#include "ArenaBattle.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AABFountain::AABFountain()
@@ -37,6 +39,36 @@ void AABFountain::BeginPlay()
 void AABFountain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (HasAuthority())
+	{
+		AddActorLocalRotation(FRotator(0.0f, RotationRate * DeltaTime, 0.0f));
+		ServerRotationYaw = RootComponent->GetComponentRotation().Yaw;
+	}
+}
 
+void AABFountain::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AABFountain, ServerRotationYaw);
+}
+
+void AABFountain::OnActorChannelOpen(class FInBunch& InBunch, class UNetConnection* Connection)
+{
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	
+	Super::OnActorChannelOpen(InBunch, Connection);
+
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+}
+
+void AABFountain::OnRep_ServerRotationYaw()
+{
+	AB_LOG(LogABNetwork, Log, TEXT("Yaw: %f"), ServerRotationYaw);
+
+	FRotator NewRotator = RootComponent->GetComponentRotation();
+	NewRotator.Yaw = ServerRotationYaw;
+	RootComponent->SetWorldRotation(NewRotator);
 }
 
