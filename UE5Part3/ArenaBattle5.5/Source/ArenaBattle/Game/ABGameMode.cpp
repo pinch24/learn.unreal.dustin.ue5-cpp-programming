@@ -1,5 +1,4 @@
 #include "Game/ABGameMode.h"
-
 #include "ABGameState.h"
 #include "Player/ABPlayerController.h"
 #include "ArenaBattle.h"
@@ -116,9 +115,9 @@ void AABGameMode::PostLogin(APlayerController* NewPlayer)
 
 void AABGameMode::StartPlay()
 {
-	// AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
-	//
-	// Super::StartPlay();
-	//
-	// AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	
+	Super::StartPlay();
+	
+	AB_LOG(LogABNetwork, Log, TEXT("%s"), TEXT("End"));
 }

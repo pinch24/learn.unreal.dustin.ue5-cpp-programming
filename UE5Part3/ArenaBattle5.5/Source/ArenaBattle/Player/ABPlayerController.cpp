@@ -1,5 +1,5 @@
-#include "ArenaBattle.h"
 #include "Player/ABPlayerController.h"
+#include "ArenaBattle.h"
 #include "UI/ABHUDWidget.h"
 
 AABPlayerController::AABPlayerController()
