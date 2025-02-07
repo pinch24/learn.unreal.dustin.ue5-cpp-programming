@@ -13,7 +13,7 @@ AABFountain::AABFountain()
 
 	RootComponent = Body;
 	Water->SetupAttachment(Body);
-	Water->SetRelativeLocation(FVector(0.0f, 0.0f, 132.0f));
+	Water->SetRelativeLocation(FVector(0.f, 0.f, 132.f));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyMeshRef(TEXT("/Script/Engine.StaticMesh'/Game/ArenaBattle/Environment/Props/SM_Plains_Castle_Fountain_01.SM_Plains_Castle_Fountain_01'"));
 	if (BodyMeshRef.Object)
@@ -26,6 +26,9 @@ AABFountain::AABFountain()
 	{
 		Water->SetStaticMesh(WaterMeshRef.Object);
 	}
+
+	bReplicates = true;
+	NetUpdateFrequency = 1.f;
 }
 
 // Called when the game starts or when spawned
@@ -42,7 +45,7 @@ void AABFountain::Tick(float DeltaTime)
 	
 	if (HasAuthority())
 	{
-		AddActorLocalRotation(FRotator(0.0f, RotationRate * DeltaTime, 0.0f));
+		AddActorLocalRotation(FRotator(0.f, RotationRate * DeltaTime, 0.f));
 		ServerRotationYaw = RootComponent->GetComponentRotation().Yaw;
 	}
 }

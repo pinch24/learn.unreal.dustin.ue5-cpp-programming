@@ -36,5 +36,5 @@ public:
 	UFUNCTION()
 	void OnRep_ServerRotationYaw();
 
-	float RotationRate = 30.0f;
+	float RotationRate = 30.f;
 };

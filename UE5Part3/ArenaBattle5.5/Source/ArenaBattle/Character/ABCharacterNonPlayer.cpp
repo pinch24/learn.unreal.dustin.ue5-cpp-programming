@@ -55,12 +55,12 @@ void AABCharacterNonPlayer::NPCMeshLoadComplete()
 
 float AABCharacterNonPlayer::GetAIPatrolRadius()
 {
-	return 580.0f;
+	return 580.f;
 }
 
 float AABCharacterNonPlayer::GetAIDetectRange()
 {
-	return 400.0f;
+	return 400.f;
 }
 
 float AABCharacterNonPlayer::GetAIAttackRange()
@@ -70,7 +70,7 @@ float AABCharacterNonPlayer::GetAIAttackRange()
 
 float AABCharacterNonPlayer::GetAITurnSpeed()
 {
-	return 2.0f;
+	return 2.f;
 }
 
 void AABCharacterNonPlayer::SetAIAttackDelegate(const FAICharacterAttackFinished& InOnAttackFinished)

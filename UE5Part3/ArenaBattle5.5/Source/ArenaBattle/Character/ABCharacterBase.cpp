@@ -184,7 +184,7 @@ void AABCharacterBase::SetComboCheckTimer()
 
 	const float AttackSpeedRate = Stat->GetTotalStat().AttackSpeed;
 	float ComboEffectiveTime = (ComboActionData->EffectiveFrameCount[ComboIndex] / ComboActionData->FrameRate) / AttackSpeedRate;
-	if (ComboEffectiveTime > 0.0f)
+	if (ComboEffectiveTime > 0.f)
 	{
 		GetWorld()->GetTimerManager().SetTimer(ComboTimerHandle, this, &AABCharacterBase::ComboCheck, ComboEffectiveTime, false);
 	}
@@ -228,7 +228,7 @@ void AABCharacterBase::AttackHitCheck()
 	float CapsuleHalfHeight = AttackRange * 0.5f;
 	FColor DrawColor = HitDetected ? FColor::Green : FColor::Red;
 
-	DrawDebugCapsule(GetWorld(), CapsuleOrigin, CapsuleHalfHeight, AttackRadius, FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat(), DrawColor, false, 5.0f);
+	DrawDebugCapsule(GetWorld(), CapsuleOrigin, CapsuleHalfHeight, AttackRadius, FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat(), DrawColor, false, 5.f);
 #endif
 }
 
