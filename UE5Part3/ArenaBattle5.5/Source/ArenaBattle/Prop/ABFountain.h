@@ -10,15 +10,12 @@ class ARENABATTLE_API AABFountain : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AABFountain();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Mesh)
@@ -29,12 +26,26 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void OnActorChannelOpen(class FInBunch& InBunch, class UNetConnection* Connection) override;
+	virtual bool IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const override;
+	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
 
 	UPROPERTY(Replicated = OnRep_ServerRotationYaw)
 	float ServerRotationYaw;
 
+	UPROPERTY(ReplicatedUsing = OnRep_ServerLightColor)
+	FLinearColor ServerLightColor;
+	//UPROPERTY(Replicated)
+	//TArray<float> BigData;
+
 	UFUNCTION()
 	void OnRep_ServerRotationYaw();
 
+	UFUNCTION()
+	void OnRep_ServerLightColor();
+
 	float RotationRate = 30.f;
+	float ClientTimeSinceUpdate = 0.f;
+	float ClientTimeBetweenLastUpdate = 0.f;
+
+	//float BigDataElement = 0.f;
 };
