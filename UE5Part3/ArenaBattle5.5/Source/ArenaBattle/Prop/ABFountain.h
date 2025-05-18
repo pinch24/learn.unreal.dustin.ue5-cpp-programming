@@ -25,17 +25,12 @@ public:
 	TObjectPtr<class UStaticMeshComponent> Water;
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual void OnActorChannelOpen(class FInBunch& InBunch, class UNetConnection* Connection) override;
-	virtual bool IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const override;
-	virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
-
+	
 	UPROPERTY(Replicated = OnRep_ServerRotationYaw)
 	float ServerRotationYaw;
 
 	UPROPERTY(ReplicatedUsing = OnRep_ServerLightColor)
 	FLinearColor ServerLightColor;
-	//UPROPERTY(Replicated)
-	//TArray<float> BigData;
 
 	UFUNCTION()
 	void OnRep_ServerRotationYaw();
