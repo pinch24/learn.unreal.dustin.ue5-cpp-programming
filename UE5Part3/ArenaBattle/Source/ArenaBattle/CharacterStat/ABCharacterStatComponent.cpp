@@ -4,7 +4,7 @@
 UABCharacterStatComponent::UABCharacterStatComponent()
 {
 	CurrentLevel = 1;
-	AttackRadius = 50.0f;
+	AttackRadius = 50.f;
 
 	bWantsInitializeComponent = true;
 }
@@ -21,7 +21,7 @@ void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
 {
 	CurrentLevel = FMath::Clamp(InNewLevel, 1, UABGameSingleton::Get().CharacterMaxLevel);
 	SetBaseStat(UABGameSingleton::Get().GetCharacterStat(CurrentLevel));
-	check(BaseStat.MaxHp > 0.0f);
+	check(BaseStat.MaxHp > 0.f);
 }
 
 float UABCharacterStatComponent::ApplyDamage(float InDamage)
