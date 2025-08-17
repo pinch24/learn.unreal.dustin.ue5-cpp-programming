@@ -82,11 +82,6 @@ void AABFountain::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& Ou
 
 void AABFountain::OnRep_ServerRotationYaw()
 {
-	if (HasAuthority())
-	{
-		AB_LOG(LogABNetwork, Warning, TEXT("Yaw: %f"), ServerRotationYaw);
-	}
-
 	FRotator NewRotator = RootComponent->GetComponentRotation();
 	NewRotator.Yaw = ServerRotationYaw;
 	RootComponent->SetWorldRotation(NewRotator);
@@ -97,11 +92,6 @@ void AABFountain::OnRep_ServerRotationYaw()
 
 void AABFountain::OnRep_ServerLightColor()
 {
-	if (HasAuthority())
-	{
-		AB_LOG(LogABNetwork, Warning, TEXT("LightColor: %s"), *ServerLightColor.ToString());
-	}
-
 	UPointLightComponent* PointLight = Cast<UPointLightComponent>(GetComponentByClass(UPointLightComponent::StaticClass()));
 	if (PointLight)
 	{

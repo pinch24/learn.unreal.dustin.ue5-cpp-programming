@@ -1,5 +1,8 @@
 #include "CharacterStat/ABCharacterStatComponent.h"
+
+#include "ArenaBattle.h"
 #include "GameData/ABGameSingleton.h"
+#include "Net/UnrealNetwork.h"
 
 UABCharacterStatComponent::UABCharacterStatComponent()
 {
@@ -7,6 +10,8 @@ UABCharacterStatComponent::UABCharacterStatComponent()
 	AttackRadius = 50.f;
 
 	bWantsInitializeComponent = true;
+
+	SetIsReplicated(true);
 }
 
 void UABCharacterStatComponent::InitializeComponent()
@@ -15,6 +20,35 @@ void UABCharacterStatComponent::InitializeComponent()
 
 	SetLevelStat(CurrentLevel);
 	SetHp(BaseStat.MaxHp);
+}
+
+void UABCharacterStatComponent::BeginPlay()
+{
+	AB_SUBLOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	Super::BeginPlay();
+}
+
+void UABCharacterStatComponent::ReadyForReplication()
+{
+	AB_SUBLOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	Super::ReadyForReplication();
+}
+
+void UABCharacterStatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UABCharacterStatComponent, CurrentHp);
+}
+
+void UABCharacterStatComponent::OnRep_CurrentHp()
+{
+	AB_SUBLOG(LogABNetwork, Log, TEXT("%s"), TEXT("Begin"));
+	OnHpChanged.Broadcast(CurrentHp);
+	if (CurrentHp <= KINDA_SMALL_NUMBER)
+	{
+		OnHpZero.Broadcast();
+	}
 }
 
 void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
